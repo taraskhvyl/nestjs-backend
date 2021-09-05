@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 import { CreateReviewDto } from '../dist/review/dto/create-review.dto';
 import { mongoose } from '@typegoose/typegoose';
 
-const productId = mongoose.Schema.Types.ObjectId().toHexString();
+const productId = new mongoose.Types.ObjectId().toHexString();
 
 const testDto: CreateReviewDto = {
 	name: 'Test',
@@ -28,16 +28,14 @@ describe('AppController (e2e)', () => {
 		await app.init();
   });
 
-  it('/review/create (POST)', async (done) => {
+  it('/review/create (POST)',  () => {
 		return request(app.getHttpServer())
 			.post('/review/create')
 			.send(testDto)
 			.expect(201)
-			.expect('Hello World!')
 			.then(({body}: request.Response) => {
 				createdId = body._id;
 				expect(createdId).toBeDefined();
-				done();
 			})
 		});
 });
